@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeValue Store | Premium Luxury Reseller</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <style type="text/tailwindcss">
+    @font-face {
+      font-family: 'Mergola';
+      src: url('fonts/mergola-regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Mergola';
+      src: url('fonts/mergola-italic.ttf') format('truetype');
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    @theme {
+      --color-bg: var(--bg);
+      --color-text: var(--text);
+      --color-accent: var(--accent);
+      --color-muted: var(--muted);
+      --color-surface: var(--surface);
+      --color-border: var(--border);
+      
+      --font-heading: 'Mergola', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    :root {
+      /* Light Mode (Default) */
+      --bg: #F5F0EB;
+      --text: #0A0A0A;
+      --surface: #FFFFFF;
+      --accent: #B38F3B;
+      --muted: #6B5B4C;
+      --border: rgba(0, 0, 0, 0.1);
+    }
+
+    .dark {
+      /* Dark Mode */
+      --bg: #0A0A0A;
+      --text: #F5F0EB;
+      --surface: #141210;
+      --accent: #C9A84C;
+      --muted: #8A7968;
+      --border: rgba(201, 168, 76, 0.15);
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Motion System & Custom Classes */
+    .ease-spring {
+      transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .reveal-hidden {
+      transform: translateY(64px);
+      opacity: 0;
+      filter: blur(8px);
+    }
+    .reveal-visible {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+      transition: all 800ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    /* Double Bezel (Sharp Luxury) */
+    .double-bezel {
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
+      padding: 8px;
+      border-radius: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    .double-bezel-inner {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1px;
+      height: 100%;
+      position: relative;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.03);
+    }
+
+    /* Button-in-Button CTA */
+    .btn-accent-hover {
+      transition: all 400ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .btn-accent-hover:hover {
+      background-color: var(--color-accent);
+      color: var(--color-bg);
+    }
+    
+    .btn-active-push:active {
+      transform: scale(0.98);
+    }
+
+    /* Marquee */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 35s linear infinite;
+    }
+    .marquee-container:hover .marquee-track {
+      animation-play-state: paused;
+    }
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+    
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Split Screen Reset */
+    @media (min-width: 768px) {
+      .h-screen-safe { min-height: 100dvh; }
+    }
+  </style>
+</head>
+<body class="text-text selection:bg-accent selection:text-bg relative">
+
+  <!-- Cart Drawer Component -->
+  <div id="cart-overlay" class="fixed inset-0 bg-bg/80 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-500"></div>
+  <div id="cart-drawer" class="fixed top-0 right-0 h-[100dvh] w-full max-w-[420px] bg-surface border-l border-border z-50 translate-x-full transition-transform duration-700 ease-spring flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-border flex justify-between items-center bg-bg/50">
+      <h2 class="font-heading italic text-3xl text-text">Your Cart</h2>
+      <button id="cart-close-btn" class="text-accent hover:text-text transition-colors focus:outline-none">
+        <i class="ph-thin ph-x text-2xl"></i>
+      </button>
+    </div>
+    
+    <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6 hide-scrollbar relative">
+      <p class="text-muted text-sm text-center mt-10 font-mono uppercase tracking-widest">Your cart is empty.</p>
+    </div>
+    
+    <div class="p-6 border-t border-border bg-bg relative z-10 shadow-[0_-20px_40px_rgba(0,0,0,0.1)]">
+      <div class="flex justify-between items-center mb-6">
+        <span class="text-[12px] uppercase tracking-widest text-muted">Total</span>
+        <span id="cart-total" class="font-mono text-accent text-xl">Rs. 0</span>
+      </div>
+      <button id="checkout-btn" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 text-[11px] uppercase tracking-widest text-bg bg-accent hover:bg-text hover:border-text hover:text-bg transition-all duration-400 group rounded-none btn-active-push">
+        <span class="mr-6">Checkout via WhatsApp</span>
+        <span class="flex items-center justify-center w-10 h-10 rounded-full border border-bg/20 group-hover:border-bg/30 transition-colors bg-transparent">
+          <i class="ph-thin ph-whatsapp-logo text-xl text-bg"></i>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Nav (Floating Pill) -->
+  <nav id="navbar" class="fixed top-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-800 ease-spring px-2 py-2 flex items-center justify-between gap-6 md:gap-12 w-[92%] max-w-6xl border border-transparent rounded-none">
+    <div class="pl-4 font-heading text-accent italic text-3xl tracking-wide">DeValue</div>
+    <div class="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] text-text flex-1 justify-center">
+      <a href="#categories" class="hover:text-accent transition-colors duration-400">Categories</a>
+      <a href="#catalog" class="hover:text-accent transition-colors duration-400">Shop</a>
+      <a href="#process" class="hover:text-accent transition-colors duration-400">Process</a>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="focus:outline-none flex items-center text-accent">
+        <i class="ph-thin ph-moon text-xl hidden dark:block"></i>
+        <i class="ph-thin ph-sun text-xl block dark:hidden"></i>
+      </button>
+
+      <!-- Cart Button -->
+      <button id="cart-toggle-btn" class="flex items-center justify-between border border-accent pl-4 md:pl-6 pr-1 py-1 text-[11px] uppercase tracking-widest text-accent hover:bg-accent hover:text-bg transition-colors duration-400 group rounded-none focus:outline-none">
+        <span class="mr-4 hidden md:inline">Cart</span>
+        <span class="font-mono text-[10px] mr-3 font-bold" id="cart-count">0</span>
+        <span class="flex items-center justify-center w-8 h-8 rounded-full border border-accent/30 group-hover:border-bg/30 transition-colors bg-bg/40 group-hover:bg-transparent">
+          <i class="ph-thin ph-shopping-bag text-lg"></i>
+        </span>
+      </button>
+      <button id="mobile-menu-btn" class="md:hidden pr-2 text-accent focus:outline-none">
+        <i class="ph-thin ph-list text-3xl"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Section 1: Hero (Editorial Split) -->
+  <section class="relative min-h-[100dvh] flex flex-col md:flex-row pt-32 md:pt-0 max-w-[1600px] mx-auto overflow-hidden">
+    <!-- Left: Typography Block -->
+    <div class="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-16 lg:px-24 z-20 py-24 md:py-0 reveal">
+      <div class="inline-block border border-border rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] font-medium text-accent mb-8 w-max">
+        Authentic Designer Goods
+      </div>
+      <h1 class="font-heading italic text-[clamp(56px,8vw,120px)] leading-[1] tracking-tighter mb-10 text-text">
+        Carry What<br>Others Dream Of.
+      </h1>
+      <p class="text-[15px] md:text-base text-muted max-w-[380px] mb-12 leading-[1.8]">
+        Authenticated luxury. Delivered to your door across Pakistan. Experience the new standard in premium resale.
+      </p>
+      <!-- CTA Button-in-Button -->
+      <a href="#catalog" class="inline-flex items-center border border-accent pl-8 pr-1 py-1 bg-bg text-text uppercase tracking-[0.15em] text-[12px] btn-accent-hover btn-active-push group w-max rounded-none">
+        <span class="mr-8">Shop Collection</span>
+        <span class="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 group-hover:border-bg/30 transition-colors bg-surface group-hover:bg-transparent">
+          <i class="ph-thin ph-arrow-down-right text-2xl group-hover:text-bg text-accent"></i>
+        </span>
+      </a>
+    </div>
+
+    <!-- Right: Z-Axis Cascade Images -->
+    <div class="w-full md:w-1/2 relative min-h-[60vh] md:min-h-[100dvh] flex items-center justify-center py-20 px-6 z-10">
+      <div class="relative w-full max-w-lg aspect-[4/5] perspective-1000">
+        <!-- Image 1 (Background left) -->
+        <div class="absolute top-0 left-0 w-3/4 h-3/4 double-bezel rotate-[-4deg] translate-y-8 -translate-x-4 shadow-2xl reveal" style="transition-delay: 150ms;">
+          <div class="double-bezel-inner overflow-hidden">
+            <img src="images/2e3983fb-5984-4c9f-b5e2-5c3d866ec1b3.jpg" alt="Luxury Bag" class="w-full h-full object-cover transition-all duration-700 ease-spring">
+          </div>
+        </div>
+        <!-- Image 2 (Foreground right) -->
+        <div class="absolute bottom-0 right-0 w-[65%] h-[65%] double-bezel rotate-[3deg] translate-y-4 translate-x-4 shadow-2xl reveal z-20" style="transition-delay: 300ms;">
+          <div class="double-bezel-inner overflow-hidden">
+            <img src="images/3f0a60e1-08e7-4e87-bcef-47c7c6218351.jpg" alt="Designer Belt" class="w-full h-full object-cover transition-all duration-700 ease-spring">
+          </div>
+        </div>
+        <!-- Image 3 (Center overlay) -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 double-bezel shadow-2xl reveal z-30" style="transition-delay: 450ms;">
+          <div class="double-bezel-inner overflow-hidden bg-bg">
+            <img src="images/482c56ac-1370-4fd3-9e6f-5ba2342c965a.jpg" alt="Designer Shoes" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105 ease-spring">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee (Floating Pill over section divider) -->
+  <div class="relative z-30 -mt-8 flex justify-center px-4 reveal">
+    <div class="w-full max-w-3xl border border-border bg-surface/90 backdrop-blur-xl py-4 px-6 overflow-hidden rounded-none shadow-xl shadow-bg/50">
+      <div class="marquee-container w-full overflow-hidden flex items-center text-[10px] uppercase tracking-[0.3em] text-muted whitespace-nowrap">
+        <div class="marquee-track space-x-12" style="animation-duration: 30s;">
+          <span>New Arrivals ✦ Belts ✦ Bags ✦ Footwear ✦ DM to Order ✦ </span>
+          <span>New Arrivals ✦ Belts ✦ Bags ✦ Footwear ✦ DM to Order ✦ </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Category Strip (Asymmetric Bento) -->
+  <section id="categories" class="py-32 md:py-40 px-6 lg:px-12 max-w-[1600px] mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
+      
+      <!-- Tile 1 (Large - Col Span 8) -->
+      <a href="#catalog" class="group col-span-1 md:col-span-8 double-bezel p-3 reveal cursor-pointer block h-full">
+        <div class="double-bezel-inner overflow-hidden relative w-full h-full">
+          <img src="images/70922625-d447-4e5d-bcf8-1375dadbead8.jpg" alt="Bags Collection" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-spring group-hover:scale-[1.03]">
+          <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
+          <div class="absolute top-8 left-8 text-[10px] uppercase tracking-[0.25em] text-accent font-medium border border-border px-3 py-1 bg-surface/80 backdrop-blur-md">Bags</div>
+          <div class="absolute bottom-8 left-8">
+            <h2 class="font-heading italic text-5xl mb-4 text-text">Signature Totes</h2>
+            <div class="font-mono text-accent text-[12px] uppercase tracking-[0.15em] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-spring flex items-center gap-2">
+              <span>View Collection</span> <i class="ph-thin ph-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Tile 2 (Col Span 4) -->
+      <a href="#catalog" class="group col-span-1 md:col-span-4 double-bezel p-3 reveal block h-full" style="transition-delay: 150ms;">
+        <div class="double-bezel-inner overflow-hidden relative w-full h-full">
+          <img src="images/80b863dc-c42f-4107-977c-15470d72257e.jpg" alt="Footwear Collection" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-spring group-hover:scale-[1.03]">
+          <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
+          <div class="absolute top-8 left-8 text-[10px] uppercase tracking-[0.25em] text-accent font-medium border border-border px-3 py-1 bg-surface/80 backdrop-blur-md">Footwear</div>
+          <div class="absolute bottom-8 left-8">
+            <h2 class="font-heading italic text-4xl mb-4 text-text">Slides & Flats</h2>
+            <div class="font-mono text-accent text-[12px] uppercase tracking-[0.15em] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-spring flex items-center gap-2">
+              <span>View Collection</span> <i class="ph-thin ph-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Section 3: Full Product Catalog -->
+  <section id="catalog" class="py-24 px-6 lg:px-12 max-w-[1600px] mx-auto overflow-hidden">
+    <div class="flex flex-col md:flex-row items-end justify-between mb-16 reveal">
+      <div>
+        <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-4 font-medium">The Archive</div>
+        <h2 class="font-heading italic text-5xl text-text">Shop Collection</h2>
+      </div>
+      <p class="hidden md:block font-mono text-[11px] uppercase tracking-[0.2em] text-muted pb-2">Showing 6 Products</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+      
+      <!-- Card 1 -->
+      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
+        <div class="double-bezel-inner flex flex-col overflow-hidden">
+          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
+            <img src="images/d8211a88-638a-4676-9242-2fc4f4bdf391.jpg" alt="Coach Slide" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
+            <div>
+              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">COACH NEW YORK</div>
+              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Buckle Slide Sandal</h3>
+              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 1,200</div>
+            </div>
+            <button onclick="addToCart('prod1', 'Buckle Slide Sandal', 1200, 'images/d8211a88-638a-4676-9242-2fc4f4bdf391.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
+              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
+              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
+                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
+        <div class="double-bezel-inner flex flex-col overflow-hidden">
+          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
+            <img src="images/f49a56a6-e953-4945-9337-60a400484e38.jpg" alt="MK Tote" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
+            <div>
+              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">MICHAEL KORS</div>
+              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Signature Chain Tote</h3>
+              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 2,500</div>
+            </div>
+            <button onclick="addToCart('prod2', 'Signature Chain Tote', 2500, 'images/f49a56a6-e953-4945-9337-60a400484e38.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
+              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
+              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
+                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
+        <div class="double-bezel-inner flex flex-col overflow-hidden">
+          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
+            <img src="images/fe199d77-e105-4bf5-84da-87aeb8bce917.jpg" alt="GG Belt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
+            <div>
+              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">GUCCI</div>
+              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">GG Double-Ring Belt</h3>
+              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 3,000</div>
+            </div>
+            <button onclick="addToCart('prod3', 'GG Double-Ring Belt', 3000, 'images/fe199d77-e105-4bf5-84da-87aeb8bce917.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
+              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
+              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
+                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card 4 -->
+      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
+        <div class="double-bezel-inner flex flex-col overflow-hidden">
+          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
+            <img src="images/482c56ac-1370-4fd3-9e6f-5ba2342c965a.jpg" alt="Loafers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
+            <div>
+              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">PRADA</div>
+              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Monolith Leather Loafers</h3>
+              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 3,500</div>
+            </div>
+            <button onclick="addToCart('prod4', 'Monolith Leather Loafers', 3500, 'images/482c56ac-1370-4fd3-9e6f-5ba2342c965a.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
+              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
+              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
+                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card 5 -->
+      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
+        <div class="double-bezel-inner flex flex-col overflow-hidden">
+          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
+            <img src="images/2e3983fb-5984-4c9f-b5e2-5c3d866ec1b3.jpg" alt="Kelly Bag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
+            <div>
+              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">HERMÈS</div>
+              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Kelly 25 Epsom Leather</h3>
+              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 4,500</div>
+            </div>
+            <button onclick="addToCart('prod5', 'Kelly 25 Epsom', 4500, 'images/2e3983fb-5984-4c9f-b5e2-5c3d866ec1b3.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
+              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
+              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
+                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card 6 -->
+      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
+        <div class="double-bezel-inner flex flex-col overflow-hidden">
+          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
+            <img src="images/3f0a60e1-08e7-4e87-bcef-47c7c6218351.jpg" alt="Vintage Bag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
+            <div>
+              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">CHANEL</div>
+              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Classic Flap Vintage</h3>
+              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 5,000</div>
+            </div>
+            <button onclick="addToCart('prod6', 'Classic Flap Vintage', 5000, 'images/3f0a60e1-08e7-4e87-bcef-47c7c6218351.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
+              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
+              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
+                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 6: Editorial Pull Quote -->
+  <section class="py-40 md:py-60 px-6 bg-text text-bg text-center flex flex-col items-center justify-center relative overflow-hidden mt-32">
+    <!-- Subtle background image for texture without grayscale -->
+    <div class="absolute inset-0 opacity-10 bg-[url('images/70922625-d447-4e5d-bcf8-1375dadbead8.jpg')] bg-cover bg-center"></div>
+    
+    <h2 class="font-heading italic text-[clamp(40px,6vw,96px)] max-w-5xl leading-[1.05] mb-12 reveal z-10">
+      "Luxury is not about price.<br>It is about knowing."
+    </h2>
+    <div class="inline-block border border-bg/20 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.25em] font-bold text-bg mb-20 reveal z-10" style="transition-delay: 150ms;">
+      DeValue Store
+    </div>
+  </section>
+
+  <!-- Section 7: How To Order -->
+  <section id="process" class="py-40 px-6 lg:px-12 max-w-[1400px] mx-auto">
+    <div class="flex items-center justify-between mb-24 reveal">
+      <h2 class="font-heading italic text-6xl text-text">The Process</h2>
+      <div class="hidden md:block w-1/2 h-[1px] bg-border"></div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 text-left">
+      
+      <div class="reveal border-t border-border pt-10 relative">
+        <span class="absolute -top-12 right-0 font-heading text-8xl text-accent/5 italic pointer-events-none">01</span>
+        <h4 class="text-xl font-heading italic text-accent mb-6">Build Your Cart</h4>
+        <p class="text-[14px] text-muted leading-relaxed">Browse our curated archive of authentic designer pieces. Add items to your bag to view the final quotation.</p>
+      </div>
+
+      <div class="reveal border-t border-border pt-10 relative" style="transition-delay: 150ms;">
+        <span class="absolute -top-12 right-0 font-heading text-8xl text-accent/5 italic pointer-events-none">02</span>
+        <h4 class="text-xl font-heading italic text-accent mb-6">Checkout to WhatsApp</h4>
+        <p class="text-[14px] text-muted leading-relaxed">With one click, your entire cart is summarized and sent directly to our secure WhatsApp channel for finalization.</p>
+      </div>
+
+      <div class="reveal border-t border-border pt-10 relative" style="transition-delay: 300ms;">
+        <span class="absolute -top-12 right-0 font-heading text-8xl text-accent/5 italic pointer-events-none">03</span>
+        <h4 class="text-xl font-heading italic text-accent mb-6">Receive & Unbox</h4>
+        <p class="text-[14px] text-muted leading-relaxed">Confirm details and get your piece securely delivered across Pakistan with our premium authentic unboxing experience.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 9: Footer -->
+  <footer class="bg-surface pt-32 pb-12 border-t border-border">
+    <div class="max-w-[1600px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-start justify-between gap-16 mb-24">
+      <div class="flex-1">
+        <div class="font-heading italic text-4xl text-accent mb-6">DeValue</div>
+        <p class="text-[12px] text-muted max-w-[250px] leading-relaxed">
+          Premium luxury reseller.<br>Authentic preloved and NWT designer goods.
+        </p>
+      </div>
+      
+      <div class="flex-1 flex flex-col md:items-center">
+        <h4 class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-6">Navigation</h4>
+        <div class="flex flex-col gap-4 text-[13px] text-muted">
+          <a href="#categories" class="hover:text-text transition-colors">Categories</a>
+          <a href="#catalog" class="hover:text-text transition-colors">Shop Collection</a>
+          <a href="#process" class="hover:text-text transition-colors">Process</a>
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col md:items-end">
+        <h4 class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-6">Connect</h4>
+        <div class="flex items-center gap-6 text-3xl text-text mb-6">
+          <a href="#" class="hover:text-accent transition-colors"><i class="ph-thin ph-instagram-logo"></i></a>
+          <a href="https://wa.me/923000000000" target="_blank" class="hover:text-accent transition-colors"><i class="ph-thin ph-whatsapp-logo"></i></a>
+        </div>
+        <div class="text-[11px] tracking-[0.2em] uppercase text-muted md:text-right">Karachi, Pakistan<br>WhatsApp Checkout</div>
+      </div>
+    </div>
+    
+    <div class="max-w-[1600px] mx-auto px-6 lg:px-12 pt-10 border-t border-border">
+      <p class="text-[10px] font-mono uppercase tracking-[0.15em] text-muted/60 text-center md:text-left">
+        © 2025 DeValue Store. All designer brands are the property of their respective owners.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scroll Detector for Nav -->
+  <div id="scroll-detector" class="absolute top-0 left-0 w-full h-[50px] opacity-0 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script>
+    // ----------------------
+    // Theme Toggle Logic
+    // ----------------------
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+    
+    // Set explicit light mode as default (do not add .dark on load)
+    if (localStorage.getItem('theme') === 'dark') {
+      htmlEl.classList.add('dark');
+    } else {
+      // Default is light, ensure dark is removed
+      htmlEl.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      htmlEl.classList.toggle('dark');
+      if (htmlEl.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // ----------------------
+    // Global Cart State
+    // ----------------------
+    let cart = [];
+
+    function toggleCart() {
+      const overlay = document.getElementById('cart-overlay');
+      const drawer = document.getElementById('cart-drawer');
+      
+      if (drawer.classList.contains('translate-x-full')) {
+        // Open
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        // Close
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function addToCart(id, name, price, image, btnElem) {
+      const existingItem = cart.find(i => i.id === id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ id, name, price, image, quantity: 1 });
+      }
+      
+      updateCartUI();
+      
+      // Haptic Feedback for Button
+      if (btnElem) {
+        const textSpan = btnElem.querySelector('.add-text');
+        const iconSpan = btnElem.querySelector('.icon');
+        
+        const originalText = textSpan.innerText;
+        const originalIcon = iconSpan.className;
+        
+        textSpan.innerText = 'Added!';
+        iconSpan.className = 'ph-thin ph-check text-lg text-accent group-hover/btn:text-bg icon';
+        
+        setTimeout(() => {
+          textSpan.innerText = originalText;
+          iconSpan.className = originalIcon;
+        }, 1200);
+      }
+      
+      // Auto-open cart on first add
+      if(cart.length === 1 && cart[0].quantity === 1) {
+          toggleCart();
+      }
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartUI();
+    }
+    
+    function updateQuantity(id, delta) {
+        const item = cart.find(i => i.id === id);
+        if(!item) return;
+        
+        item.quantity += delta;
+        if(item.quantity <= 0) {
+            removeFromCart(id);
+        } else {
+            updateCartUI();
+        }
+    }
+
+    function updateCartUI() {
+      // Update count badge
+      const count = cart.reduce((sum, i) => sum + i.quantity, 0);
+      document.getElementById('cart-count').innerText = count;
+      
+      const container = document.getElementById('cart-items');
+      const totalElem = document.getElementById('cart-total');
+      
+      if (cart.length === 0) {
+        container.innerHTML = '<p class="text-muted text-sm text-center mt-10 font-mono uppercase tracking-widest">Your cart is empty.</p>';
+        totalElem.innerText = 'Rs. 0';
+        return;
+      }
+      
+      // Build Items HTML
+      container.innerHTML = cart.map(item => `
+        <div class="flex gap-4 p-4 border border-border bg-surface relative group">
+          <div class="w-20 h-24 bg-bg flex-shrink-0">
+            <img src="${item.image}" class="w-full h-full object-cover transition-all" />
+          </div>
+          <div class="flex-1 flex flex-col justify-between py-1">
+            <div>
+              <h4 class="text-text text-[14px] font-heading leading-tight">${item.name}</h4>
+              <div class="text-accent font-mono text-[11px] mt-2">Rs. ${item.price.toLocaleString()}</div>
+            </div>
+            <div class="flex items-center gap-3 mt-4">
+              <div class="flex items-center border border-border">
+                <button onclick="updateQuantity('${item.id}', -1)" class="w-6 h-6 flex items-center justify-center text-muted hover:text-text hover:bg-bg transition-colors"><i class="ph-thin ph-minus text-[10px]"></i></button>
+                <span class="w-6 text-center font-mono text-[11px] text-text">${item.quantity}</span>
+                <button onclick="updateQuantity('${item.id}', 1)" class="w-6 h-6 flex items-center justify-center text-muted hover:text-text hover:bg-bg transition-colors"><i class="ph-thin ph-plus text-[10px]"></i></button>
+              </div>
+            </div>
+          </div>
+          <button onclick="removeFromCart('${item.id}')" class="absolute top-4 right-4 text-muted hover:text-accent transition-colors">
+            <i class="ph-thin ph-trash text-lg"></i>
+          </button>
+        </div>
+      `).join('');
+      
+      // Update Total
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      totalElem.innerText = 'Rs. ' + total.toLocaleString();
+    }
+
+    // Checkout to WhatsApp
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      if (cart.length === 0) return;
+      
+      let msg = "Hello DeValue Store! I would like to order the following items from the website:\n\n";
+      cart.forEach(item => {
+        msg += `▪ ${item.quantity}x ${item.name} (Rs. ${(item.price * item.quantity).toLocaleString()})\n`;
+      });
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      msg += `\n*TOTAL: Rs. ${total.toLocaleString()}*`;
+      
+      const url = `https://wa.me/923000000000?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    });
+
+    // Event Listeners for Cart Triggers
+    document.getElementById('cart-toggle-btn').addEventListener('click', toggleCart);
+    document.getElementById('cart-close-btn').addEventListener('click', toggleCart);
+    document.getElementById('cart-overlay').addEventListener('click', toggleCart);
+
+    // ----------------------
+    // Animation & Layout logic
+    // ----------------------
+    const observeElements = () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('reveal-hidden');
+            entry.target.classList.add('reveal-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        el.classList.add('reveal-hidden');
+        observer.observe(el);
+      });
+    };
+
+    const handleNavbar = () => {
+      const nav = document.getElementById('navbar');
+      const detector = document.getElementById('scroll-detector');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            nav.classList.add('bg-surface/90', 'backdrop-blur-xl', 'border-border', 'shadow-2xl', 'px-6', 'max-w-5xl');
+            nav.classList.remove('border-transparent', 'px-2', 'max-w-6xl');
+          } else {
+            nav.classList.remove('bg-surface/90', 'backdrop-blur-xl', 'border-border', 'shadow-2xl', 'px-6', 'max-w-5xl');
+            nav.classList.add('border-transparent', 'px-2', 'max-w-6xl');
+          }
+        });
+      }, { threshold: 0 });
+
+      if (detector) observer.observe(detector);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      observeElements();
+      handleNavbar();
+    });
+  </script>
+</body>
+</html>
