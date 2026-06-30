@@ -1,734 +1,1299 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth bg-bg">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeValue Store | Premium Luxury Reseller</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeValueStore — Luxury, Thoughtfully Selected</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1C1C1C;
+    --background:#EFEFEF;
+    --surface:#FFFFFF;
+    --border:#CFCFCF;
+    --accent:#03589A;
+    --on-sale:#E32C2B;
+    --text-subdued:rgba(28,28,28,0.65);
+    --font-heading:'Playfair Display', serif;
+    --font-body:'Nanum Myeongjo', serif;
+    --gutter:1.25rem;
+    --section-gap:2.5rem;
+    --stack-gap:2.25rem;
+  }
 
-  <style type="text/tailwindcss">
-    @font-face {
-      font-family: 'Mergola';
-      src: url('fonts/mergola-regular.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Mergola';
-      src: url('fonts/mergola-italic.ttf') format('truetype');
-      font-weight: 400;
-      font-style: italic;
-    }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    color:var(--primary);
+    background:var(--surface);
+    font-size:0.9375rem;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3{
+    font-family:var(--font-heading);
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  .container{
+    max-width:1360px;
+    margin:0 auto;
+    padding:0 var(--gutter);
+  }
+  @media (min-width:1024px){ .container{padding:0 3rem;} }
 
-    @theme {
-      --color-bg: var(--bg);
-      --color-text: var(--text);
-      --color-accent: var(--accent);
-      --color-muted: var(--muted);
-      --color-surface: var(--surface);
-      --color-border: var(--border);
-      
-      --font-heading: 'Mergola', sans-serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
+  /* Announcement bar */
+  .announcement-bar{
+    background:var(--primary);
+    color:#fff;
+    text-align:center;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:0.55rem var(--gutter);
+  }
 
-    :root {
-      /* Light Mode (Default) */
-      --bg: #F5F0EB;
-      --text: #0A0A0A;
-      --surface: #FFFFFF;
-      --accent: #B38F3B;
-      --muted: #6B5B4C;
-      --border: rgba(0, 0, 0, 0.1);
-    }
+  /* Header */
+  header{ border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:60; }
+  .header-top{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.5rem var(--gutter); font-size:0.62rem; text-transform:uppercase;
+    letter-spacing:0.05em; color:var(--text-subdued); border-bottom:1px solid var(--border);
+    flex-wrap:wrap; gap:0.3rem;
+  }
+  .header-main{ display:flex; align-items:center; justify-content:space-between; padding:0.9rem var(--gutter); gap:0.5rem; }
+  .logo{ font-family:var(--font-heading); font-size:1rem; letter-spacing:0.12em; text-align:center; line-height:1.2; }
+  .logo span{ display:block; font-size:0.5rem; letter-spacing:0.3em; color:var(--text-subdued); }
+  @media (min-width:600px){ .logo{font-size:1.1rem;} .logo span{font-size:0.55rem;} }
 
-    .dark {
-      /* Dark Mode */
-      --bg: #0A0A0A;
-      --text: #F5F0EB;
-      --surface: #141210;
-      --accent: #C9A84C;
-      --muted: #8A7968;
-      --border: rgba(201, 168, 76, 0.15);
-    }
+  .nav-icons{ display:flex; gap:0.6rem; align-items:center; font-size:0.95rem; }
+  .icon-btn{
+    background:none; border:none; cursor:pointer; color:var(--primary); font-size:1.05rem;
+    transition:opacity 0.2s ease; position:relative; min-width:44px; min-height:44px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:hover{ opacity:0.6; }
+  .cart-count{
+    position:absolute; top:2px; right:2px; background:var(--accent); color:#fff;
+    font-family:var(--font-body); font-size:0.6rem; min-width:16px; height:16px; border-radius:9999px;
+    display:flex; align-items:center; justify-content:center; padding:0 3px; line-height:1;
+  }
 
-    body {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      font-family: var(--font-body);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      transition: background-color 0.4s ease, color 0.4s ease;
-    }
+  .hamburger{
+    background:none; border:none; cursor:pointer; font-size:1.2rem; min-width:44px; min-height:44px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  @media (min-width:900px){ .hamburger{ display:none; } }
 
-    /* Motion System & Custom Classes */
-    .ease-spring {
-      transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
-    }
+  .main-nav{
+    display:none; flex-direction:column; gap:0; padding:0;
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    border-top:1px solid var(--border); background:var(--surface);
+    position:absolute; left:0; right:0; z-index:55;
+  }
+  .main-nav.open{ display:flex; }
+  .main-nav a{ padding:0.9rem var(--gutter); border-bottom:1px solid var(--border); }
+  .main-nav a:hover{ background:var(--background); }
 
-    .reveal-hidden {
-      transform: translateY(64px);
-      opacity: 0;
-      filter: blur(8px);
+  @media (min-width:900px){
+    .main-nav{
+      display:flex !important; flex-direction:row; justify-content:center; gap:2.2rem;
+      padding:0 var(--gutter) 0.9rem; position:static; border-top:none;
     }
-    .reveal-visible {
-      transform: translateY(0);
-      opacity: 1;
-      filter: blur(0);
-      transition: all 800ms cubic-bezier(0.32, 0.72, 0, 1);
+    .main-nav a{ padding:0; border-bottom:none; position:relative; padding-bottom:4px; }
+    .main-nav a::after{
+      content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+      background:var(--primary); transition:width 0.3s ease;
     }
+    .main-nav a:hover::after{ width:100%; }
+  }
 
-    /* Double Bezel (Sharp Luxury) */
-    .double-bezel {
-      background-color: var(--color-bg);
-      border: 1px solid var(--color-border);
-      padding: 8px;
-      border-radius: 0;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-    }
-    .double-bezel-inner {
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 1px;
-      height: 100%;
-      position: relative;
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.03);
-    }
+  .search-bar{
+    display:none; padding:0.9rem var(--gutter); border-top:1px solid var(--border);
+    background:var(--background);
+  }
+  .search-bar.open{ display:flex; gap:0.5rem; }
+  .search-bar input{
+    flex:1; border:1px solid var(--border); background:var(--surface); padding:0.7rem 0.9rem;
+    font-family:var(--font-body); font-size:0.85rem; min-height:44px;
+  }
+  .search-bar input:focus{ outline:2px solid var(--accent); outline-offset:-2px; }
+  .search-bar button{
+    background:var(--primary); color:#fff; border:none; padding:0 1.1rem;
+    font-family:var(--font-heading); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;
+    cursor:pointer; min-height:44px;
+  }
 
-    /* Button-in-Button CTA */
-    .btn-accent-hover {
-      transition: all 400ms cubic-bezier(0.32, 0.72, 0, 1);
-    }
-    .btn-accent-hover:hover {
-      background-color: var(--color-accent);
-      color: var(--color-bg);
-    }
-    
-    .btn-active-push:active {
-      transform: scale(0.98);
-    }
+  /* Hero */
+  .hero{ position:relative; display:grid; grid-template-columns:1fr; background:var(--primary); overflow:hidden; }
+  @media (min-width:900px){ .hero{ grid-template-columns:1.1fr 1fr; } }
+  .hero-image{ aspect-ratio:4/3; overflow:hidden; }
+  .hero-image img{ width:100%; height:100%; object-fit:cover; transition:transform 6s ease; }
+  .hero:hover .hero-image img{ transform:scale(1.04); }
+  .hero-copy{
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    color:#fff; padding:2.5rem 1.5rem; gap:1.2rem;
+  }
+  .hero-copy h1{ font-size:1.5rem; line-height:1.3; font-style:italic; font-weight:400; }
+  @media (min-width:600px){ .hero-copy h1{ font-size:2.2rem; } }
+  .hero-copy p{ font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.75); }
+  .hero-copy .btn{ margin-top:0.5rem; }
+  .hero-logo-mark{
+    margin-top:1rem; font-family:var(--font-heading); font-size:0.85rem; letter-spacing:0.25em;
+    display:flex; align-items:center; gap:0.6rem;
+  }
 
-    /* Marquee */
-    .marquee-track {
-      display: flex;
-      width: max-content;
-      animation: marquee 35s linear infinite;
-    }
-    .marquee-container:hover .marquee-track {
-      animation-play-state: paused;
-    }
-    @keyframes marquee {
-      to { transform: translateX(-50%); }
-    }
-    
-    .hide-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .hide-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+  /* Sections */
+  section{ padding:var(--section-gap) 0; }
+  .section-heading{ text-align:center; margin-bottom:var(--stack-gap); padding:0 var(--gutter); }
+  .section-eyebrow{
+    display:block; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--text-subdued); margin-bottom:0.5rem;
+  }
+  .section-heading h2{ font-size:1.15rem; letter-spacing:0.08em; }
+  @media (min-width:600px){ .section-heading h2{ font-size:1.3rem; } }
 
-    /* Split Screen Reset */
-    @media (min-width: 768px) {
-      .h-screen-safe { min-height: 100dvh; }
-    }
-  </style>
+  .btn{
+    display:inline-block; background:var(--primary); color:#fff; border:0px;
+    font-family:var(--font-heading); font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase;
+    padding:0.8rem 1.8rem; cursor:pointer; transition:background 0.25s ease, transform 0.15s ease;
+    min-height:44px; appearance:none;
+  }
+  .btn:hover{ background:#3a3a3a; }
+  .btn:active{ transform:scale(0.97); }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .btn-outline{ background:transparent; border:1px solid var(--primary); color:var(--primary); }
+  .btn-outline:hover{ background:var(--primary); color:#fff; }
+
+  .center{ text-align:center; margin-top:var(--stack-gap); padding:0 var(--gutter); }
+
+  /* Product grid */
+  .product-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; padding:0 var(--gutter); }
+  @media (min-width:700px){ .product-grid{ grid-template-columns:repeat(4,1fr); gap:1.25rem; padding:0 3rem; } }
+
+  .product-card{ text-align:center; }
+  .product-media{ position:relative; aspect-ratio:3/4; overflow:hidden; background:var(--background); border:1px solid var(--border); }
+  .product-media img{ width:100%; height:100%; object-fit:cover; transition:opacity 0.4s ease, transform 0.5s ease; }
+  .product-media .img-secondary{ position:absolute; inset:0; opacity:0; }
+  .product-card:hover .img-secondary{ opacity:1; }
+  .product-card:hover .img-primary{ transform:scale(1.03); }
+
+  .product-title{ margin-top:0.85rem; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.03em; }
+  .product-price{ margin-top:0.25rem; font-family:'Nanum Myeongjo',serif; font-size:0.82rem; color:var(--text-subdued); }
+  .add-cart-btn{
+    margin-top:0.7rem; width:100%; background:var(--primary); color:#fff; border:none;
+    font-family:var(--font-heading); font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
+    padding:0.65rem 0.5rem; cursor:pointer; min-height:40px; transition:background 0.2s ease;
+  }
+  .add-cart-btn:hover{ background:#3a3a3a; }
+  .add-cart-btn.added{ background:var(--accent); }
+
+  /* Banner */
+  .banner{ position:relative; overflow:hidden; height:220px; }
+  @media (min-width:700px){ .banner{ height:280px; } }
+  .banner img{ width:100%; height:100%; object-fit:cover; }
+  .banner-overlay{
+    position:absolute; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center;
+    justify-content:center; text-align:center; color:#fff; flex-direction:column; gap:0.6rem; padding:1rem;
+  }
+  .banner-overlay p{ font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; }
+  .banner-overlay h3{ font-size:1rem; font-style:italic; font-weight:400; }
+  @media (min-width:600px){ .banner-overlay h3{ font-size:1.1rem; } }
+
+  /* Luxury split */
+  .luxury-split{ display:grid; grid-template-columns:repeat(2,1fr); background:var(--primary); color:#fff; }
+  @media (min-width:900px){ .luxury-split{ grid-template-columns:repeat(4,1fr); } }
+  .luxury-split .ls-img{ aspect-ratio:3/4; overflow:hidden; }
+  .luxury-split .ls-img img{ width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; }
+  .luxury-split .ls-img:hover img{ transform:scale(1.05); }
+  .luxury-split .ls-copy{
+    grid-column:span 2; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:1rem; padding:2rem 1rem;
+  }
+  .luxury-split .ls-copy h2{ font-size:1.9rem; letter-spacing:0.1em; }
+  @media (min-width:600px){ .luxury-split .ls-copy h2{ font-size:2.6rem; } }
+  .luxury-split .ls-copy h3{ font-size:0.9rem; font-style:italic; font-weight:400; text-transform:none; letter-spacing:0; }
+  .luxury-split .ls-copy p{ font-size:0.7rem; color:rgba(255,255,255,0.7); letter-spacing:0.05em; text-transform:uppercase; }
+  @media (max-width:899px){ .luxury-split .ls-copy{ grid-column:span 2; order:2; } }
+
+  /* Brand grid */
+  .brand-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+  @media (min-width:700px){ .brand-grid{ grid-template-columns:repeat(4,1fr); gap:1.25rem; } }
+  .brand-card{ position:relative; aspect-ratio:3/4; overflow:hidden; border:1px solid var(--border); cursor:pointer; }
+  .brand-card img{ width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; }
+  .brand-card:hover img{ transform:scale(1.06); }
+  .brand-card-content{
+    position:absolute; left:0; right:0; bottom:0; padding:0.8rem;
+    background:linear-gradient(to top, rgba(0,0,0,0.6), transparent); color:#fff; text-align:center;
+  }
+  .brand-card-content .brand-name{
+    font-family:var(--font-heading); font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.55rem;
+  }
+  @media (min-width:600px){ .brand-card-content .brand-name{ font-size:1rem; } }
+  .brand-card-content .btn-outline{
+    border-color:rgba(255,255,255,0.8); color:#fff; background:transparent; font-size:0.58rem; padding:0.5rem 1rem;
+  }
+  .brand-card-content .btn-outline:hover{ background:#fff; color:var(--primary); }
+
+  /* Reborn strip — kinetic word-cycle banner */
+  .reborn-strip{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    height:220px;
+    overflow:hidden;
+  }
+  @media (min-width:700px){ .reborn-strip{ height:320px; } }
+  .reborn-cell{
+    position:relative;
+    overflow:hidden;
+  }
+  .reborn-cell img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.8s cubic-bezier(.2,.8,.2,1), filter 0.8s ease;
+  }
+  .reborn-cell::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0) 45%);
+    opacity:0;
+    transition:opacity 0.5s ease;
+  }
+  .reborn-cell:hover img{ transform:scale(1.1); filter:brightness(0.85); }
+  .reborn-cell:hover::after{ opacity:1; }
+  .reborn-caption{
+    position:absolute;
+    left:0.7rem; right:0.7rem; bottom:0.7rem;
+    font-family:var(--font-heading);
+    font-style:italic;
+    font-size:0.68rem;
+    letter-spacing:0.02em;
+    color:#fff;
+    text-transform:none;
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity 0.45s ease, transform 0.45s ease;
+  }
+  @media (min-width:700px){ .reborn-caption{ font-size:0.85rem; left:1.1rem; right:1.1rem; bottom:1.1rem; } }
+  .reborn-cell:hover .reborn-caption{ opacity:1; transform:translateY(0); }
+  .reborn-text{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    pointer-events:none;
+  }
+  .reborn-cycle{
+    position:relative;
+    height:1.2em;
+    overflow:hidden;
+  }
+  .reborn-cycle span{
+    position:absolute; left:50%;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    font-size:1.7rem;
+    color:#1C1C1C;
+    -webkit-text-stroke:2px #fff;
+    letter-spacing:0.12em;
+    text-shadow:0 2px 12px rgba(0,0,0,0.4);
+    opacity:0;
+    animation:cycleWord 9s infinite;
+  }
+  @media (min-width:600px){ .reborn-cycle span{ font-size:2.6rem; letter-spacing:0.14em; } }
+  .reborn-cycle span:nth-child(1){ animation-delay:0s; }
+  .reborn-cycle span:nth-child(2){ animation-delay:3s; }
+  .reborn-cycle span:nth-child(3){ animation-delay:6s; }
+  @keyframes cycleWord{
+    0%, 4%{ opacity:0; transform:translateX(-50%) translateY(8px); }
+    8%, 28%{ opacity:1; transform:translateX(-50%) translateY(0); }
+    33%, 100%{ opacity:0; transform:translateX(-50%) translateY(-8px); }
+  }
+
+  /* Category grid */
+  .category-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+  @media (min-width:700px){ .category-grid{ grid-template-columns:repeat(4,1fr); gap:1.25rem; } }
+  .category-card{
+    background:var(--background); border:1px solid var(--border); aspect-ratio:1/1.05;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem;
+    text-align:center; transition:background 0.25s ease; padding:0.5rem;
+  }
+  .category-card:hover{ background:#e2e2e2; }
+  .category-card .cat-name{ font-family:var(--font-heading); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; }
+  @media (min-width:600px){ .category-card .cat-name{ font-size:0.85rem; } }
+  .category-card .btn-outline{ font-size:0.58rem; padding:0.55rem 1.2rem; }
+
+  /* Newsletter / luxury banner */
+  .luxury-banner{ background:var(--primary); color:#fff; text-align:center; padding:3rem var(--gutter); }
+  .luxury-banner h2{ font-size:2rem; letter-spacing:0.15em; }
+  @media (min-width:600px){ .luxury-banner h2{ font-size:2.8rem; } }
+  .luxury-banner p{ margin-top:1rem; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.7); }
+
+  .instagram-heading{
+    text-align:center; padding:2rem var(--gutter) 0; font-style:italic; font-family:var(--font-heading);
+    font-size:1rem; text-transform:none;
+  }
+
+  /* Footer */
+  footer{ background:var(--background); border-top:1px solid var(--border); padding:3rem var(--gutter) 1.5rem; }
+  .footer-grid{ display:grid; grid-template-columns:1fr; gap:2rem; max-width:1360px; margin:0 auto; }
+  @media (min-width:700px){ .footer-grid{ grid-template-columns:1.4fr 1fr 1.4fr; } }
+  .footer-col h4{ font-family:var(--font-heading); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem; }
+  .footer-col p, .footer-col a{ display:block; font-size:0.8rem; color:var(--text-subdued); margin-bottom:0.5rem; transition:color 0.2s ease; }
+  .footer-col a:hover{ color:var(--primary); }
+
+  .newsletter-form{ display:flex; margin-top:1rem; border:1px solid var(--border); max-width:340px; }
+  .newsletter-form input{ flex:1; border:none; background:transparent; padding:0.75rem 0.9rem; font-family:var(--font-body); font-size:0.8rem; min-height:44px; min-width:0; }
+  .newsletter-form input:focus{ outline:none; }
+  .newsletter-form button{
+    background:var(--primary); color:#fff; border:none; padding:0 1.1rem; font-family:var(--font-heading);
+    font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; min-height:44px;
+  }
+  .newsletter-form button:hover{ background:#3a3a3a; }
+
+  .social-icons{ display:flex; gap:0.8rem; margin-top:1.2rem; }
+  .social-icons a{
+    width:36px; height:36px; border:1px solid var(--border); border-radius:9999px; display:flex;
+    align-items:center; justify-content:center; font-size:0.75rem; transition:background 0.2s ease, color 0.2s ease;
+  }
+  .social-icons a:hover{ background:var(--primary); color:#fff; }
+
+  .footer-bottom{
+    text-align:center; margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid var(--border);
+    font-size:0.68rem; color:var(--text-subdued); letter-spacing:0.04em;
+  }
+
+  /* Cart drawer */
+  .cart-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.4); opacity:0; pointer-events:none;
+    transition:opacity 0.3s ease; z-index:90;
+  }
+  .cart-overlay.open{ opacity:1; pointer-events:auto; }
+
+  .cart-drawer{
+    position:fixed; top:0; right:0; bottom:0; width:100%; max-width:400px; background:var(--surface);
+    transform:translateX(100%); transition:transform 0.35s ease; z-index:95; display:flex; flex-direction:column;
+    box-shadow:-2px 0 20px rgba(0,0,0,0.15);
+  }
+  .cart-drawer.open{ transform:translateX(0); }
+  .cart-header{
+    display:flex; align-items:center; justify-content:space-between; padding:1.1rem var(--gutter);
+    border-bottom:1px solid var(--border);
+  }
+  .cart-header h3{ font-size:0.95rem; letter-spacing:0.1em; }
+  .cart-close{ background:none; border:none; font-size:1.3rem; cursor:pointer; min-width:44px; min-height:44px; }
+  .cart-items{ flex:1; overflow-y:auto; padding:1rem var(--gutter); }
+  .cart-empty{ text-align:center; color:var(--text-subdued); padding:2.5rem 1rem; font-size:0.85rem; }
+  .cart-item{ display:flex; gap:0.8rem; padding:0.9rem 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+  .cart-item img{ width:64px; height:80px; object-fit:cover; border:1px solid var(--border); flex-shrink:0; }
+  .cart-item-info{ flex:1; }
+  .cart-item-info .ci-title{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; }
+  .cart-item-info .ci-price{ font-size:0.78rem; color:var(--text-subdued); margin-top:0.3rem; }
+  .ci-controls{ display:flex; align-items:center; gap:0.6rem; margin-top:0.6rem; }
+  .ci-qty-btn{
+    width:26px; height:26px; border:1px solid var(--border); background:var(--surface); cursor:pointer;
+    font-size:0.85rem; display:flex; align-items:center; justify-content:center;
+  }
+  .ci-qty-btn:hover{ background:var(--background); }
+  .ci-remove{
+    background:none; border:none; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--on-sale); cursor:pointer; margin-left:auto; padding:0.4rem;
+  }
+  .cart-footer{ border-top:1px solid var(--border); padding:1.1rem var(--gutter) 1.4rem; }
+  .cart-subtotal{ display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:1rem; letter-spacing:0.02em; }
+  .cart-footer .btn{ width:100%; text-align:center; }
+
+  /* Toast */
+  .toast{
+    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--primary); color:#fff; padding:0.85rem 1.5rem; font-size:0.78rem;
+    letter-spacing:0.03em; z-index:120; opacity:0; pointer-events:none; transition:opacity 0.3s ease, transform 0.3s ease;
+    max-width:90vw; text-align:center;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* scroll reveal */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+
+  /* Authentication Ritual */
+  .ritual{
+    background:var(--primary);
+    color:#fff;
+    padding:4.5rem var(--gutter) 5rem;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .ritual::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,255,255,0.05) 0%, transparent 38%),
+      radial-gradient(circle at 82% 78%, rgba(255,255,255,0.05) 0%, transparent 38%);
+    pointer-events:none;
+  }
+  .ritual-eyebrow{
+    font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:rgba(255,255,255,0.55); margin-bottom:0.75rem; display:block;
+  }
+  .ritual h2{
+    color:#fff; font-size:clamp(1.6rem,4vw,2.4rem); margin-bottom:0.6rem; letter-spacing:0.04em;
+  }
+  .ritual-sub{
+    max-width:480px; margin:0 auto 3rem; color:rgba(255,255,255,0.65);
+    font-size:0.9rem; line-height:1.7;
+  }
+  .seal-wrap{
+    position:relative; width:148px; height:148px; margin:0 auto 3.25rem;
+    cursor:pointer;
+  }
+  .seal{
+    width:100%; height:100%; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.35);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    transition:transform 0.6s cubic-bezier(.2,.8,.2,1), border-color 0.6s ease;
+  }
+  .seal::before{
+    content:"";
+    position:absolute; inset:10px;
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:50%;
+  }
+  .seal-mark{
+    font-family:var(--font-heading);
+    font-size:0.62rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.85);
+    text-align:center;
+    line-height:1.6;
+  }
+  .seal-ring{
+    position:absolute; inset:-14px;
+    border-radius:50%;
+    border:1px dashed rgba(255,255,255,0.18);
+    animation:rotateSeal 24s linear infinite;
+  }
+  @keyframes rotateSeal{ to{ transform:rotate(360deg); } }
+  .seal-wrap.active .seal{
+    transform:scale(1.08);
+    border-color:var(--accent);
+  }
+  .seal-wrap:hover .seal{ border-color:rgba(255,255,255,0.7); }
+
+  .ritual-points{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1px;
+    max-width:760px;
+    margin:0 auto;
+    background:rgba(255,255,255,0.12);
+  }
+  @media (min-width:768px){
+    .ritual-points{ grid-template-columns:repeat(3,1fr); }
+  }
+  .ritual-point{
+    background:var(--primary);
+    padding:1.75rem 1.25rem;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity 0.55s ease, transform 0.55s ease;
+  }
+  .ritual-points.show .ritual-point{ opacity:1; transform:translateY(0); }
+  .ritual-points.show .ritual-point:nth-child(1){ transition-delay:0.05s; }
+  .ritual-points.show .ritual-point:nth-child(2){ transition-delay:0.2s; }
+  .ritual-points.show .ritual-point:nth-child(3){ transition-delay:0.35s; }
+  .ritual-point-index{
+    font-family:var(--font-heading);
+    font-size:0.7rem;
+    color:var(--accent);
+    letter-spacing:0.12em;
+    display:block;
+    margin-bottom:0.6rem;
+  }
+  .ritual-point h4{
+    font-family:var(--font-heading);
+    font-weight:400;
+    font-size:0.95rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:0.5rem;
+  }
+  .ritual-point p{
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.6);
+    line-height:1.65;
+  }
+  .ritual-hint{
+    font-size:0.68rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.4);
+    margin-top:2.5rem;
+  }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  button:focus-visible, a:focus-visible, input:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  body.no-scroll{ overflow:hidden; }
+</style>
 </head>
-<body class="text-text selection:bg-accent selection:text-bg relative">
+<body>
 
-  <!-- Cart Drawer Component -->
-  <div id="cart-overlay" class="fixed inset-0 bg-bg/80 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-500"></div>
-  <div id="cart-drawer" class="fixed top-0 right-0 h-[100dvh] w-full max-w-[420px] bg-surface border-l border-border z-50 translate-x-full transition-transform duration-700 ease-spring flex flex-col shadow-2xl">
-    <div class="p-6 border-b border-border flex justify-between items-center bg-bg/50">
-      <h2 class="font-heading italic text-3xl text-text">Your Cart</h2>
-      <button id="cart-close-btn" class="text-accent hover:text-text transition-colors focus:outline-none">
-        <i class="ph-thin ph-x text-2xl"></i>
-      </button>
-    </div>
-    
-    <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6 hide-scrollbar relative">
-      <p class="text-muted text-sm text-center mt-10 font-mono uppercase tracking-widest">Your cart is empty.</p>
-    </div>
-    
-    <div class="p-6 border-t border-border bg-bg relative z-10 shadow-[0_-20px_40px_rgba(0,0,0,0.1)]">
-      <div class="flex justify-between items-center mb-6">
-        <span class="text-[12px] uppercase tracking-widest text-muted">Total</span>
-        <span id="cart-total" class="font-mono text-accent text-xl">Rs. 0</span>
-      </div>
-      <button id="checkout-btn" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 text-[11px] uppercase tracking-widest text-bg bg-accent hover:bg-text hover:border-text hover:text-bg transition-all duration-400 group rounded-none btn-active-push">
-        <span class="mr-6">Checkout via WhatsApp</span>
-        <span class="flex items-center justify-center w-10 h-10 rounded-full border border-bg/20 group-hover:border-bg/30 transition-colors bg-transparent">
-          <i class="ph-thin ph-whatsapp-logo text-xl text-bg"></i>
-        </span>
+<div class="announcement-bar">Complimentary shipping on every preloved order over Rs. 15,000</div>
+
+<header>
+  <div class="header-top container">
+    <span>EN / PKR</span>
+    <span>Authenticated Preloved Luxury — Curated for the Discerning</span>
+  </div>
+  <div class="header-main">
+    <button class="hamburger" id="menuToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+    <a href="#" class="logo">DEVALUE<span>STORE</span></a>
+    <div class="nav-icons">
+      <button class="icon-btn" id="accountBtn" aria-label="Account"><span aria-hidden="true">&#9787;</span></button>
+      <button class="icon-btn" id="searchBtn" aria-label="Search" aria-expanded="false"><span aria-hidden="true">&#128269;</span></button>
+      <button class="icon-btn" id="cartBtn" aria-label="Open cart">
+        <span aria-hidden="true">&#128722;</span>
+        <span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
   </div>
-
-  <!-- Nav (Floating Pill) -->
-  <nav id="navbar" class="fixed top-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-800 ease-spring px-2 py-2 flex items-center justify-between gap-6 md:gap-12 w-[92%] max-w-6xl border border-transparent rounded-none">
-    <div class="pl-4 font-heading text-accent italic text-3xl tracking-wide">DeValue</div>
-    <div class="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] text-text flex-1 justify-center">
-      <a href="#categories" class="hover:text-accent transition-colors duration-400">Categories</a>
-      <a href="#catalog" class="hover:text-accent transition-colors duration-400">Shop</a>
-      <a href="#process" class="hover:text-accent transition-colors duration-400">Process</a>
-    </div>
-    
-    <div class="flex items-center gap-4">
-      <!-- Theme Toggle -->
-      <button id="theme-toggle" class="focus:outline-none flex items-center text-accent">
-        <i class="ph-thin ph-moon text-xl hidden dark:block"></i>
-        <i class="ph-thin ph-sun text-xl block dark:hidden"></i>
-      </button>
-
-      <!-- Cart Button -->
-      <button id="cart-toggle-btn" class="flex items-center justify-between border border-accent pl-4 md:pl-6 pr-1 py-1 text-[11px] uppercase tracking-widest text-accent hover:bg-accent hover:text-bg transition-colors duration-400 group rounded-none focus:outline-none">
-        <span class="mr-4 hidden md:inline">Cart</span>
-        <span class="font-mono text-[10px] mr-3 font-bold" id="cart-count">0</span>
-        <span class="flex items-center justify-center w-8 h-8 rounded-full border border-accent/30 group-hover:border-bg/30 transition-colors bg-bg/40 group-hover:bg-transparent">
-          <i class="ph-thin ph-shopping-bag text-lg"></i>
-        </span>
-      </button>
-      <button id="mobile-menu-btn" class="md:hidden pr-2 text-accent focus:outline-none">
-        <i class="ph-thin ph-list text-3xl"></i>
-      </button>
-    </div>
+  <nav class="main-nav" id="mainNav" aria-label="Primary">
+    <a href="#new-arrivals">Women</a>
+    <a href="#new-arrivals">Men</a>
+    <a href="#exclusives">Curated Handbags</a>
+    <a href="#new-arrivals">Sale</a>
   </nav>
+  <div class="search-bar" id="searchBar">
+    <label for="searchInput" class="sr-only">Search products</label>
+    <input id="searchInput" type="search" placeholder="Search for bags, brands, shoes...">
+    <button id="searchSubmit" type="button">Search</button>
+  </div>
+</header>
 
-  <!-- Section 1: Hero (Editorial Split) -->
-  <section class="relative min-h-[100dvh] flex flex-col md:flex-row pt-32 md:pt-0 max-w-[1600px] mx-auto overflow-hidden">
-    <!-- Left: Typography Block -->
-    <div class="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-16 lg:px-24 z-20 py-24 md:py-0 reveal">
-      <div class="inline-block border border-border rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] font-medium text-accent mb-8 w-max">
-        Authentic Designer Goods
-      </div>
-      <h1 class="font-heading italic text-[clamp(56px,8vw,120px)] leading-[1] tracking-tighter mb-10 text-text">
-        Carry What<br>Others Dream Of.
-      </h1>
-      <p class="text-[15px] md:text-base text-muted max-w-[380px] mb-12 leading-[1.8]">
-        Authenticated luxury. Delivered to your door across Pakistan. Experience the new standard in premium resale.
-      </p>
-      <!-- CTA Button-in-Button -->
-      <a href="#catalog" class="inline-flex items-center border border-accent pl-8 pr-1 py-1 bg-bg text-text uppercase tracking-[0.15em] text-[12px] btn-accent-hover btn-active-push group w-max rounded-none">
-        <span class="mr-8">Shop Collection</span>
-        <span class="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 group-hover:border-bg/30 transition-colors bg-surface group-hover:bg-transparent">
-          <i class="ph-thin ph-arrow-down-right text-2xl group-hover:text-bg text-accent"></i>
-        </span>
-      </a>
+<section class="hero" style="padding:0;">
+  <div class="hero-image">
+    <img src="1.jpg" alt="Curated preloved handbag and accessories arrangement">
+  </div>
+  <div class="hero-copy">
+    <h1>THE WORLD OF<br>DEVALUESTORE</h1>
+    <p>Preloved Luxury, Carefully Chosen.</p>
+    <a href="#new-arrivals" class="btn">Shop New Arrivals</a>
+    <div class="hero-logo-mark">&#10070; DEVALUESTORE</div>
+  </div>
+</section>
+
+<section class="reveal" id="new-arrivals">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">2026 — What's just been added to our collection</span>
+      <h2>New Arrivals</h2>
     </div>
+  </div>
+  <div class="product-grid">
+    <div class="product-card" data-id="p1" data-name="Aria Reissue Shoulder Bag in Heritage Canvas" data-price="38000" data-img="2.jpg">
+      <div class="product-media">
+        <img class="img-primary" src="2.jpg" alt="Preloved leather shoulder bag in chestnut canvas">
+        <img class="img-secondary" src="3.jpg" alt="Alternate angle of chestnut canvas shoulder bag">
+      </div>
+      <p class="product-title">Aria Reissue Shoulder Bag in Heritage Canvas</p>
+      <p class="product-price">Rs. 38,000.00</p>
+      <button class="add-cart-btn" type="button">Add to Cart</button>
+    </div>
+    <div class="product-card" data-id="p2" data-name="Belle Estate Crossbody in Signature Canvas" data-price="31500" data-img="4.jpg">
+      <div class="product-media">
+        <img class="img-primary" src="4.jpg" alt="Structured crossbody bag in monogram canvas">
+        <img class="img-secondary" src="5.jpg" alt="Alternate angle of monogram crossbody bag">
+      </div>
+      <p class="product-title">Belle Estate Crossbody in Signature Canvas</p>
+      <p class="product-price">Rs. 31,500.00</p>
+      <button class="add-cart-btn" type="button">Add to Cart</button>
+    </div>
+    <div class="product-card" data-id="p3" data-name="Lumen Quilted Bag in Signature Weave" data-price="44200" data-img="6.jpg">
+      <div class="product-media">
+        <img class="img-primary" src="6.jpg" alt="Quilted bag with chain strap in signature pattern">
+        <img class="img-secondary" src="1.jpg" alt="Alternate angle of quilted chain bag">
+      </div>
+      <p class="product-title">Lumen Quilted Bag in Signature Weave</p>
+      <p class="product-price">Rs. 44,200.00</p>
+      <button class="add-cart-btn" type="button">Add to Cart</button>
+    </div>
+    <div class="product-card" data-id="p4" data-name="Petale Top Handle in Blush Floral Canvas" data-price="27800" data-img="2.jpg">
+      <div class="product-media">
+        <img class="img-primary" src="2.jpg" alt="Pink floral print top handle bag">
+        <img class="img-secondary" src="3.jpg" alt="Alternate angle of floral print top handle bag">
+      </div>
+      <p class="product-title">Petale Top Handle in Blush Floral Canvas</p>
+      <p class="product-price">Rs. 27,800.00</p>
+      <button class="add-cart-btn" type="button">Add to Cart</button>
+    </div>
+  </div>
+  <div class="center">
+    <a href="#exclusives" class="btn view-all-btn">View All</a>
+  </div>
+</section>
 
-    <!-- Right: Z-Axis Cascade Images -->
-    <div class="w-full md:w-1/2 relative min-h-[60vh] md:min-h-[100dvh] flex items-center justify-center py-20 px-6 z-10">
-      <div class="relative w-full max-w-lg aspect-[4/5] perspective-1000">
-        <!-- Image 1 (Background left) -->
-        <div class="absolute top-0 left-0 w-3/4 h-3/4 double-bezel rotate-[-4deg] translate-y-8 -translate-x-4 shadow-2xl reveal" style="transition-delay: 150ms;">
-          <div class="double-bezel-inner overflow-hidden">
-            <img src="images/2e3983fb-5984-4c9f-b5e2-5c3d866ec1b3.jpg" alt="Luxury Bag" class="w-full h-full object-cover transition-all duration-700 ease-spring">
-          </div>
+<section class="banner reveal">
+  <img src="4.jpg" alt="Close-up of a luxury wristwatch on textured fabric">
+  <div class="banner-overlay">
+    <p>Time, Considered.</p>
+    <h3>Where Craftsmanship Becomes Heirloom</h3>
+  </div>
+</section>
+
+<section class="luxury-split reveal" style="padding:0;">
+  <div class="ls-img"><img src="5.jpg" alt="Hands inspecting a green leather handbag"></div>
+  <div class="ls-img"><img src="6.jpg" alt="Hands inspecting an authenticated handbag closely"></div>
+  <div class="ls-copy">
+    <h2>PRELOVED</h2>
+    <h3>Without Compromise</h3>
+    <p>Sourced from the world's most coveted fashion houses</p>
+  </div>
+  <div class="ls-img"><img src="1.jpg" alt="Hands holding a structured top handle bag"></div>
+  <div class="ls-img"><img src="2.jpg" alt="Detail shot of a leather handbag clasp"></div>
+</section>
+
+<section class="ritual reveal" id="authentication">
+  <span class="ritual-eyebrow">Every piece, verified</span>
+  <h2>The Authentication Ritual</h2>
+  <p class="ritual-sub">Before a single item reaches our shelves, it passes through a three-point inspection by our in-house specialists. Tap the seal.</p>
+
+  <div class="seal-wrap" id="sealBtn" role="button" tabindex="0" aria-expanded="false" aria-controls="ritualPoints">
+    <div class="seal-ring"></div>
+    <div class="seal">
+      <span class="seal-mark">DeValueStore<br>Verified</span>
+    </div>
+  </div>
+
+  <div class="ritual-points" id="ritualPoints">
+    <div class="ritual-point">
+      <span class="ritual-point-index">01</span>
+      <h4>Hardware &amp; Stitching</h4>
+      <p>Every clasp, zipper pull, and seam is checked against the house's original construction standards.</p>
+    </div>
+    <div class="ritual-point">
+      <span class="ritual-point-index">02</span>
+      <h4>Material &amp; Patina</h4>
+      <p>Leather grain, canvas weave, and hardware plating are examined under daylight-balanced light.</p>
+    </div>
+    <div class="ritual-point">
+      <span class="ritual-point-index">03</span>
+      <h4>Provenance Record</h4>
+      <p>Serial numbers and date codes are cross-referenced before a piece earns the DeValueStore seal.</p>
+    </div>
+  </div>
+  <span class="ritual-hint">No two ritual seals are alike — yours unlocks above</span>
+</section>
+
+<section class="reveal" id="exclusives">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">Reauthenticated luxury from the world's leading houses</span>
+      <h2>DeValueStore Exclusives</h2>
+    </div>
+    <div class="brand-grid" style="margin-bottom:1.25rem;">
+      <div class="brand-card view-brand-btn" data-brand="Maison Belle">
+        <img src="3.jpg" alt="Preloved Maison Belle handbag display">
+        <div class="brand-card-content">
+          <div class="brand-name">Maison Belle</div>
+          <button class="btn-outline btn" type="button">View Products</button>
         </div>
-        <!-- Image 2 (Foreground right) -->
-        <div class="absolute bottom-0 right-0 w-[65%] h-[65%] double-bezel rotate-[3deg] translate-y-4 translate-x-4 shadow-2xl reveal z-20" style="transition-delay: 300ms;">
-          <div class="double-bezel-inner overflow-hidden">
-            <img src="images/3f0a60e1-08e7-4e87-bcef-47c7c6218351.jpg" alt="Designer Belt" class="w-full h-full object-cover transition-all duration-700 ease-spring">
-          </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Castellan">
+        <img src="4.jpg" alt="Preloved Castellan handbag display">
+        <div class="brand-card-content">
+          <div class="brand-name">Castellan</div>
+          <button class="btn-outline btn" type="button">View Products</button>
         </div>
-        <!-- Image 3 (Center overlay) -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 double-bezel shadow-2xl reveal z-30" style="transition-delay: 450ms;">
-          <div class="double-bezel-inner overflow-hidden bg-bg">
-            <img src="images/482c56ac-1370-4fd3-9e6f-5ba2342c965a.jpg" alt="Designer Shoes" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105 ease-spring">
-          </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Voyageur">
+        <img src="5.jpg" alt="Preloved Voyageur trunk handbag display">
+        <div class="brand-card-content">
+          <div class="brand-name">Voyageur</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Aurelio">
+        <img src="6.jpg" alt="Preloved Aurelio monogram tote display">
+        <div class="brand-card-content">
+          <div class="brand-name">Aurelio</div>
+          <button class="btn-outline btn" type="button">View Products</button>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Marquee (Floating Pill over section divider) -->
-  <div class="relative z-30 -mt-8 flex justify-center px-4 reveal">
-    <div class="w-full max-w-3xl border border-border bg-surface/90 backdrop-blur-xl py-4 px-6 overflow-hidden rounded-none shadow-xl shadow-bg/50">
-      <div class="marquee-container w-full overflow-hidden flex items-center text-[10px] uppercase tracking-[0.3em] text-muted whitespace-nowrap">
-        <div class="marquee-track space-x-12" style="animation-duration: 30s;">
-          <span>New Arrivals ✦ Belts ✦ Bags ✦ Footwear ✦ DM to Order ✦ </span>
-          <span>New Arrivals ✦ Belts ✦ Bags ✦ Footwear ✦ DM to Order ✦ </span>
+    <div class="brand-grid" style="margin-bottom:1.25rem;">
+      <div class="brand-card view-brand-btn" data-brand="Fendelle">
+        <img src="1.jpg" alt="Preloved Fendelle clutch display">
+        <div class="brand-card-content">
+          <div class="brand-name">Fendelle</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Saint Rivoli">
+        <img src="2.jpg" alt="Preloved Saint Rivoli wallet display">
+        <div class="brand-card-content">
+          <div class="brand-name">Saint Rivoli</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Valenne">
+        <img src="3.jpg" alt="Preloved Valenne wallet display">
+        <div class="brand-card-content">
+          <div class="brand-name">Valenne</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Burrowfield">
+        <img src="4.jpg" alt="Preloved Burrowfield check scarf display">
+        <div class="brand-card-content">
+          <div class="brand-name">Burrowfield</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+    </div>
+    <div class="brand-grid">
+      <div class="brand-card view-brand-btn" data-brand="Jacquemaire">
+        <img src="5.jpg" alt="Preloved Jacquemaire pink bag display">
+        <div class="brand-card-content">
+          <div class="brand-name">Jacquemaire</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Benedetta">
+        <img src="6.jpg" alt="Preloved Benedetta clothing display">
+        <div class="brand-card-content">
+          <div class="brand-name">Benedetta</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Polane">
+        <img src="1.jpg" alt="Preloved Polane minimalist bag display">
+        <div class="brand-card-content">
+          <div class="brand-name">Polane</div>
+          <button class="btn-outline btn" type="button">View Products</button>
+        </div>
+      </div>
+      <div class="brand-card view-brand-btn" data-brand="Manolo Blaine">
+        <img src="2.jpg" alt="Preloved Manolo heel display">
+        <div class="brand-card-content">
+          <div class="brand-name">Manolo Blaine</div>
+          <button class="btn-outline btn" type="button">View Products</button>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Section 2: Category Strip (Asymmetric Bento) -->
-  <section id="categories" class="py-32 md:py-40 px-6 lg:px-12 max-w-[1600px] mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
-      
-      <!-- Tile 1 (Large - Col Span 8) -->
-      <a href="#catalog" class="group col-span-1 md:col-span-8 double-bezel p-3 reveal cursor-pointer block h-full">
-        <div class="double-bezel-inner overflow-hidden relative w-full h-full">
-          <img src="images/70922625-d447-4e5d-bcf8-1375dadbead8.jpg" alt="Bags Collection" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-spring group-hover:scale-[1.03]">
-          <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
-          <div class="absolute top-8 left-8 text-[10px] uppercase tracking-[0.25em] text-accent font-medium border border-border px-3 py-1 bg-surface/80 backdrop-blur-md">Bags</div>
-          <div class="absolute bottom-8 left-8">
-            <h2 class="font-heading italic text-5xl mb-4 text-text">Signature Totes</h2>
-            <div class="font-mono text-accent text-[12px] uppercase tracking-[0.15em] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-spring flex items-center gap-2">
-              <span>View Collection</span> <i class="ph-thin ph-arrow-right"></i>
-            </div>
-          </div>
-        </div>
-      </a>
-
-      <!-- Tile 2 (Col Span 4) -->
-      <a href="#catalog" class="group col-span-1 md:col-span-4 double-bezel p-3 reveal block h-full" style="transition-delay: 150ms;">
-        <div class="double-bezel-inner overflow-hidden relative w-full h-full">
-          <img src="images/80b863dc-c42f-4107-977c-15470d72257e.jpg" alt="Footwear Collection" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-spring group-hover:scale-[1.03]">
-          <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
-          <div class="absolute top-8 left-8 text-[10px] uppercase tracking-[0.25em] text-accent font-medium border border-border px-3 py-1 bg-surface/80 backdrop-blur-md">Footwear</div>
-          <div class="absolute bottom-8 left-8">
-            <h2 class="font-heading italic text-4xl mb-4 text-text">Slides & Flats</h2>
-            <div class="font-mono text-accent text-[12px] uppercase tracking-[0.15em] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-spring flex items-center gap-2">
-              <span>View Collection</span> <i class="ph-thin ph-arrow-right"></i>
-            </div>
-          </div>
-        </div>
-      </a>
-
+<section class="reborn-strip reveal" style="padding:0;">
+  <div class="reborn-cell">
+    <img src="3.jpg" alt="Embellished sandal detail">
+    <span class="reborn-caption">A step, retraced.</span>
+  </div>
+  <div class="reborn-cell">
+    <img src="4.jpg" alt="Quilted handbag detail">
+    <span class="reborn-caption">Stitched with history.</span>
+  </div>
+  <div class="reborn-cell">
+    <img src="5.jpg" alt="Red leather handbag detail">
+    <span class="reborn-caption">Once loved, kept close.</span>
+  </div>
+  <div class="reborn-cell">
+    <img src="6.jpg" alt="Gold chain handbag detail">
+    <span class="reborn-caption">A clasp, remembered.</span>
+  </div>
+  <div class="reborn-text">
+    <div class="reborn-cycle">
+      <span>PRELOVED</span>
+      <span>PRESERVED</span>
+      <span>PASSED FORWARD</span>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Section 3: Full Product Catalog -->
-  <section id="catalog" class="py-24 px-6 lg:px-12 max-w-[1600px] mx-auto overflow-hidden">
-    <div class="flex flex-col md:flex-row items-end justify-between mb-16 reveal">
-      <div>
-        <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-4 font-medium">The Archive</div>
-        <h2 class="font-heading italic text-5xl text-text">Shop Collection</h2>
-      </div>
-      <p class="hidden md:block font-mono text-[11px] uppercase tracking-[0.2em] text-muted pb-2">Showing 6 Products</p>
+<section class="reveal" id="contemporary">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">Elevated staples of preloved contemporary designer brands</span>
+      <h2>DeValueStore Contemporary</h2>
     </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-      
-      <!-- Card 1 -->
-      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
-        <div class="double-bezel-inner flex flex-col overflow-hidden">
-          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
-            <img src="images/d8211a88-638a-4676-9242-2fc4f4bdf391.jpg" alt="Coach Slide" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
-          </div>
-          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
-            <div>
-              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">COACH NEW YORK</div>
-              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Buckle Slide Sandal</h3>
-              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 1,200</div>
-            </div>
-            <button onclick="addToCart('prod1', 'Buckle Slide Sandal', 1200, 'images/d8211a88-638a-4676-9242-2fc4f4bdf391.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
-              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
-              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
-                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
-              </span>
-            </button>
-          </div>
-        </div>
+    <div class="category-grid" style="margin-bottom:1.25rem;">
+      <div class="category-card view-brand-btn" data-brand="Tory Hatch">
+        <span class="cat-name">Tory Hatch</span>
+        <button class="btn-outline btn" type="button">View Products</button>
       </div>
-
-      <!-- Card 2 -->
-      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
-        <div class="double-bezel-inner flex flex-col overflow-hidden">
-          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
-            <img src="images/f49a56a6-e953-4945-9337-60a400484e38.jpg" alt="MK Tote" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
-          </div>
-          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
-            <div>
-              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">MICHAEL KORS</div>
-              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Signature Chain Tote</h3>
-              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 2,500</div>
-            </div>
-            <button onclick="addToCart('prod2', 'Signature Chain Tote', 2500, 'images/f49a56a6-e953-4945-9337-60a400484e38.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
-              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
-              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
-                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
-              </span>
-            </button>
-          </div>
-        </div>
+      <div class="category-card view-brand-btn" data-brand="Coachella">
+        <span class="cat-name">Coachella</span>
+        <button class="btn-outline btn" type="button">View Products</button>
       </div>
-
-      <!-- Card 3 -->
-      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
-        <div class="double-bezel-inner flex flex-col overflow-hidden">
-          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
-            <img src="images/fe199d77-e105-4bf5-84da-87aeb8bce917.jpg" alt="GG Belt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
-          </div>
-          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
-            <div>
-              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">GUCCI</div>
-              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">GG Double-Ring Belt</h3>
-              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 3,000</div>
-            </div>
-            <button onclick="addToCart('prod3', 'GG Double-Ring Belt', 3000, 'images/fe199d77-e105-4bf5-84da-87aeb8bce917.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
-              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
-              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
-                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
-              </span>
-            </button>
-          </div>
-        </div>
+      <div class="category-card view-brand-btn" data-brand="Marc Jordan">
+        <span class="cat-name">Marc Jordan</span>
+        <button class="btn-outline btn" type="button">View Products</button>
       </div>
-      
-      <!-- Card 4 -->
-      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
-        <div class="double-bezel-inner flex flex-col overflow-hidden">
-          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
-            <img src="images/482c56ac-1370-4fd3-9e6f-5ba2342c965a.jpg" alt="Loafers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
-          </div>
-          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
-            <div>
-              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">PRADA</div>
-              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Monolith Leather Loafers</h3>
-              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 3,500</div>
-            </div>
-            <button onclick="addToCart('prod4', 'Monolith Leather Loafers', 3500, 'images/482c56ac-1370-4fd3-9e6f-5ba2342c965a.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
-              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
-              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
-                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Card 5 -->
-      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
-        <div class="double-bezel-inner flex flex-col overflow-hidden">
-          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
-            <img src="images/2e3983fb-5984-4c9f-b5e2-5c3d866ec1b3.jpg" alt="Kelly Bag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
-          </div>
-          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
-            <div>
-              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">HERMÈS</div>
-              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Kelly 25 Epsom Leather</h3>
-              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 4,500</div>
-            </div>
-            <button onclick="addToCart('prod5', 'Kelly 25 Epsom', 4500, 'images/2e3983fb-5984-4c9f-b5e2-5c3d866ec1b3.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
-              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
-              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
-                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Card 6 -->
-      <div class="double-bezel h-[650px] p-2 group hover:-translate-y-2 transition-transform duration-700 ease-spring hover:border-accent/50 reveal">
-        <div class="double-bezel-inner flex flex-col overflow-hidden">
-          <div class="h-[60%] w-full bg-bg relative border-b border-border overflow-hidden">
-            <img src="images/3f0a60e1-08e7-4e87-bcef-47c7c6218351.jpg" alt="Vintage Bag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-spring">
-          </div>
-          <div class="p-8 flex flex-col justify-between flex-1 bg-surface">
-            <div>
-              <div class="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">CHANEL</div>
-              <h3 class="font-heading text-3xl mb-1 text-text leading-tight">Classic Flap Vintage</h3>
-              <div class="font-mono text-accent text-[15px] mt-4 tracking-wider">Rs. 5,000</div>
-            </div>
-            <button onclick="addToCart('prod6', 'Classic Flap Vintage', 5000, 'images/3f0a60e1-08e7-4e87-bcef-47c7c6218351.jpg', this)" class="w-full flex items-center justify-between border border-accent pl-6 pr-1 py-1 mt-6 btn-accent-hover btn-active-push group/btn focus:outline-none">
-              <span class="text-[11px] uppercase tracking-widest add-text">Add to Cart</span>
-              <span class="flex items-center justify-center w-10 h-10 rounded-full border border-accent/30 group-hover/btn:border-bg/30 transition-colors bg-bg group-hover/btn:bg-transparent">
-                <i class="ph-thin ph-plus text-lg text-accent group-hover/btn:text-bg icon"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Section 6: Editorial Pull Quote -->
-  <section class="py-40 md:py-60 px-6 bg-text text-bg text-center flex flex-col items-center justify-center relative overflow-hidden mt-32">
-    <!-- Subtle background image for texture without grayscale -->
-    <div class="absolute inset-0 opacity-10 bg-[url('images/70922625-d447-4e5d-bcf8-1375dadbead8.jpg')] bg-cover bg-center"></div>
-    
-    <h2 class="font-heading italic text-[clamp(40px,6vw,96px)] max-w-5xl leading-[1.05] mb-12 reveal z-10">
-      "Luxury is not about price.<br>It is about knowing."
-    </h2>
-    <div class="inline-block border border-bg/20 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.25em] font-bold text-bg mb-20 reveal z-10" style="transition-delay: 150ms;">
-      DeValue Store
-    </div>
-  </section>
-
-  <!-- Section 7: How To Order -->
-  <section id="process" class="py-40 px-6 lg:px-12 max-w-[1400px] mx-auto">
-    <div class="flex items-center justify-between mb-24 reveal">
-      <h2 class="font-heading italic text-6xl text-text">The Process</h2>
-      <div class="hidden md:block w-1/2 h-[1px] bg-border"></div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 text-left">
-      
-      <div class="reveal border-t border-border pt-10 relative">
-        <span class="absolute -top-12 right-0 font-heading text-8xl text-accent/5 italic pointer-events-none">01</span>
-        <h4 class="text-xl font-heading italic text-accent mb-6">Build Your Cart</h4>
-        <p class="text-[14px] text-muted leading-relaxed">Browse our curated archive of authentic designer pieces. Add items to your bag to view the final quotation.</p>
-      </div>
-
-      <div class="reveal border-t border-border pt-10 relative" style="transition-delay: 150ms;">
-        <span class="absolute -top-12 right-0 font-heading text-8xl text-accent/5 italic pointer-events-none">02</span>
-        <h4 class="text-xl font-heading italic text-accent mb-6">Checkout to WhatsApp</h4>
-        <p class="text-[14px] text-muted leading-relaxed">With one click, your entire cart is summarized and sent directly to our secure WhatsApp channel for finalization.</p>
-      </div>
-
-      <div class="reveal border-t border-border pt-10 relative" style="transition-delay: 300ms;">
-        <span class="absolute -top-12 right-0 font-heading text-8xl text-accent/5 italic pointer-events-none">03</span>
-        <h4 class="text-xl font-heading italic text-accent mb-6">Receive & Unbox</h4>
-        <p class="text-[14px] text-muted leading-relaxed">Confirm details and get your piece securely delivered across Pakistan with our premium authentic unboxing experience.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Section 9: Footer -->
-  <footer class="bg-surface pt-32 pb-12 border-t border-border">
-    <div class="max-w-[1600px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-start justify-between gap-16 mb-24">
-      <div class="flex-1">
-        <div class="font-heading italic text-4xl text-accent mb-6">DeValue</div>
-        <p class="text-[12px] text-muted max-w-[250px] leading-relaxed">
-          Premium luxury reseller.<br>Authentic preloved and NWT designer goods.
-        </p>
-      </div>
-      
-      <div class="flex-1 flex flex-col md:items-center">
-        <h4 class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-6">Navigation</h4>
-        <div class="flex flex-col gap-4 text-[13px] text-muted">
-          <a href="#categories" class="hover:text-text transition-colors">Categories</a>
-          <a href="#catalog" class="hover:text-text transition-colors">Shop Collection</a>
-          <a href="#process" class="hover:text-text transition-colors">Process</a>
-        </div>
-      </div>
-
-      <div class="flex-1 flex flex-col md:items-end">
-        <h4 class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-6">Connect</h4>
-        <div class="flex items-center gap-6 text-3xl text-text mb-6">
-          <a href="#" class="hover:text-accent transition-colors"><i class="ph-thin ph-instagram-logo"></i></a>
-          <a href="https://wa.me/923000000000" target="_blank" class="hover:text-accent transition-colors"><i class="ph-thin ph-whatsapp-logo"></i></a>
-        </div>
-        <div class="text-[11px] tracking-[0.2em] uppercase text-muted md:text-right">Karachi, Pakistan<br>WhatsApp Checkout</div>
+      <div class="category-card view-brand-btn" data-brand="Michael Vance">
+        <span class="cat-name">Michael Vance</span>
+        <button class="btn-outline btn" type="button">View Products</button>
       </div>
     </div>
-    
-    <div class="max-w-[1600px] mx-auto px-6 lg:px-12 pt-10 border-t border-border">
-      <p class="text-[10px] font-mono uppercase tracking-[0.15em] text-muted/60 text-center md:text-left">
-        © 2025 DeValue Store. All designer brands are the property of their respective owners.
-      </p>
+    <div class="category-grid">
+      <div class="category-card view-brand-btn" data-brand="Kurt Reiger">
+        <span class="cat-name">Kurt Reiger</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Long Champlain">
+        <span class="cat-name">Long Champlain</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="JW Pevi">
+        <span class="cat-name">JW Pevi</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Swarovski Glow">
+        <span class="cat-name">Swarovski Glow</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <!-- Scroll Detector for Nav -->
-  <div id="scroll-detector" class="absolute top-0 left-0 w-full h-[50px] opacity-0 pointer-events-none"></div>
+<section class="reveal" id="for-him">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">Curated essentials and dependable quality for him</span>
+      <h2>DeValueStore For Him</h2>
+    </div>
+    <div class="category-grid">
+      <div class="category-card view-brand-btn" data-brand="Men's Shoes">
+        <span class="cat-name">Shoes</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Men's Watches">
+        <span class="cat-name">Watches</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Men's Accessories">
+        <span class="cat-name">Accessories</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Men's Fragrances">
+        <span class="cat-name">Fragrances</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Scripts -->
-  <script>
-    // ----------------------
-    // Theme Toggle Logic
-    // ----------------------
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const htmlEl = document.documentElement;
-    
-    // Set explicit light mode as default (do not add .dark on load)
-    if (localStorage.getItem('theme') === 'dark') {
-      htmlEl.classList.add('dark');
+<section class="reveal" id="for-her">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">Elevated handbags, accessories, and refined fragrance staples</span>
+      <h2>DeValueStore For Her</h2>
+    </div>
+    <div class="category-grid">
+      <div class="category-card view-brand-btn" data-brand="Women's Shoes">
+        <span class="cat-name">Shoes</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Women's Watches">
+        <span class="cat-name">Watches</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Women's Accessories">
+        <span class="cat-name">Accessories</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Women's Fragrances">
+        <span class="cat-name">Fragrances</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="beauty">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">Everyday beauty essentials and key selected accents</span>
+      <h2>DeValueStore Beauty</h2>
+    </div>
+    <div class="category-grid">
+      <div class="category-card view-brand-btn" data-brand="Makeup">
+        <span class="cat-name">Makeup</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Skin Care">
+        <span class="cat-name">Skin Care</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Hair Care">
+        <span class="cat-name">Hair Care</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+      <div class="category-card view-brand-btn" data-brand="Gift Sets">
+        <span class="cat-name">Gift Sets</span>
+        <button class="btn-outline btn" type="button">View Products</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<p class="instagram-heading">Find Us On Instagram!</p>
+
+<section class="luxury-banner reveal">
+  <h2>PRELOVED</h2>
+  <p>Built to outlast trend cycles</p>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>DeValueStore — Curated Authentic, Thoughtfully Sourced</h4>
+      <p>Beautiful preloved pieces from sought-after designer houses, carefully authenticated and brought to you in lasting condition.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="#" class="footer-link">About Us</a>
+      <a href="#" class="footer-link">Shipping</a>
+      <a href="#" class="footer-link">Contact Us</a>
+      <a href="#" class="footer-link">Terms &amp; Conditions</a>
+    </div>
+    <div class="footer-col">
+      <h4>Join the DeValueStore Circle</h4>
+      <p>Be the first to hear about new arrivals, curated edits, and exclusive previews.</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input id="newsletter-email" type="email" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook" class="footer-link">f</a>
+        <a href="#" aria-label="Instagram" class="footer-link">ig</a>
+        <a href="#" aria-label="TikTok" class="footer-link">tt</a>
+        <a href="#" aria-label="Pinterest" class="footer-link">p</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 DeValueStore Online Store. All rights reserved.
+  </div>
+</footer>
+
+<!-- Cart drawer -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart" aria-hidden="true">
+  <div class="cart-header">
+    <h3>Your Bag</h3>
+    <button class="cart-close" id="cartClose" aria-label="Close cart">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Your bag is empty.</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">Rs. 0.00</span>
+    </div>
+    <button class="btn" id="checkoutBtn" type="button">Checkout</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  // ---- State ----
+  var cart = {};
+
+  // ---- Elements ----
+  var menuToggle = document.getElementById('menuToggle');
+  var mainNav = document.getElementById('mainNav');
+  var searchBtn = document.getElementById('searchBtn');
+  var searchBar = document.getElementById('searchBar');
+  var searchInput = document.getElementById('searchInput');
+  var searchSubmit = document.getElementById('searchSubmit');
+  var accountBtn = document.getElementById('accountBtn');
+  var cartBtn = document.getElementById('cartBtn');
+  var cartOverlay = document.getElementById('cartOverlay');
+  var cartDrawer = document.getElementById('cartDrawer');
+  var cartClose = document.getElementById('cartClose');
+  var cartItemsEl = document.getElementById('cartItems');
+  var cartCountEl = document.getElementById('cartCount');
+  var cartSubtotalEl = document.getElementById('cartSubtotal');
+  var checkoutBtn = document.getElementById('checkoutBtn');
+  var toastEl = document.getElementById('toast');
+  var newsletterForm = document.getElementById('newsletterForm');
+
+  // ---- Toast ----
+  var toastTimer;
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
+  }
+
+  // ---- Mobile menu ----
+  menuToggle.addEventListener('click', function(){
+    var isOpen = mainNav.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    menuToggle.innerHTML = isOpen ? '&times;' : '&#9776;';
+    if (isOpen){ searchBar.classList.remove('open'); searchBtn.setAttribute('aria-expanded','false'); }
+  });
+
+  mainNav.addEventListener('click', function(e){
+    if (e.target.tagName === 'A' && window.innerWidth < 900){
+      mainNav.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.innerHTML = '&#9776;';
+    }
+  });
+
+  // ---- Search ----
+  searchBtn.addEventListener('click', function(){
+    var isOpen = searchBar.classList.toggle('open');
+    searchBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (isOpen){
+      mainNav.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded','false');
+      menuToggle.innerHTML = '&#9776;';
+      searchInput.focus();
+    }
+  });
+  function doSearch(){
+    var q = searchInput.value.trim();
+    if (q){
+      showToast('Searching for "' + q + '"…');
+      searchBar.classList.remove('open');
+      searchBtn.setAttribute('aria-expanded','false');
+      searchInput.value = '';
     } else {
-      // Default is light, ensure dark is removed
-      htmlEl.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      searchInput.focus();
+    }
+  }
+  searchSubmit.addEventListener('click', doSearch);
+  searchInput.addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); doSearch(); }
+  });
+
+  // ---- Account ----
+  accountBtn.addEventListener('click', function(){
+    showToast('Sign in to view your DeValueStore account.');
+  });
+
+  // ---- Cart helpers ----
+  function formatPrice(n){
+    return 'Rs. ' + n.toLocaleString('en-PK', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  function getCartCount(){
+    var total = 0;
+    for (var id in cart){ total += cart[id].qty; }
+    return total;
+  }
+
+  function getCartSubtotal(){
+    var total = 0;
+    for (var id in cart){ total += cart[id].qty * cart[id].price; }
+    return total;
+  }
+
+  function renderCart(){
+    var ids = Object.keys(cart);
+    cartCountEl.textContent = getCartCount();
+    cartSubtotalEl.textContent = formatPrice(getCartSubtotal());
+
+    if (ids.length === 0){
+      cartItemsEl.innerHTML = '<p class="cart-empty">Your bag is empty.</p>';
+      return;
     }
 
-    themeToggleBtn.addEventListener('click', () => {
-      htmlEl.classList.toggle('dark');
-      if (htmlEl.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
+    var html = '';
+    ids.forEach(function(id){
+      var item = cart[id];
+      html += '' +
+        '<div class="cart-item" data-id="' + id + '">' +
+          '<img src="' + item.img + '" alt="' + item.name + '">' +
+          '<div class="cart-item-info">' +
+            '<p class="ci-title">' + item.name + '</p>' +
+            '<p class="ci-price">' + formatPrice(item.price * item.qty) + '</p>' +
+            '<div class="ci-controls">' +
+              '<button class="ci-qty-btn" data-action="decrease" aria-label="Decrease quantity">&minus;</button>' +
+              '<span aria-live="polite">' + item.qty + '</span>' +
+              '<button class="ci-qty-btn" data-action="increase" aria-label="Increase quantity">+</button>' +
+              '<button class="ci-remove" data-action="remove">Remove</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    cartItemsEl.innerHTML = html;
+  }
+
+  function addToCart(id, name, price, img){
+    if (cart[id]){
+      cart[id].qty += 1;
+    } else {
+      cart[id] = { name:name, price:price, img:img, qty:1 };
+    }
+    renderCart();
+    showToast(name + ' added to bag');
+  }
+
+  cartItemsEl.addEventListener('click', function(e){
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var itemEl = e.target.closest('.cart-item');
+    if (!itemEl) return;
+    var id = itemEl.getAttribute('data-id');
+    var action = btn.getAttribute('data-action');
+
+    if (action === 'increase'){
+      cart[id].qty += 1;
+    } else if (action === 'decrease'){
+      cart[id].qty -= 1;
+      if (cart[id].qty <= 0){ delete cart[id]; }
+    } else if (action === 'remove'){
+      delete cart[id];
+    }
+    renderCart();
+  });
+
+  // ---- Cart drawer open/close ----
+  function openCart(){
+    cartDrawer.classList.add('open');
+    cartOverlay.classList.add('open');
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+  }
+  function closeCart(){
+    cartDrawer.classList.remove('open');
+    cartOverlay.classList.remove('open');
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+  }
+  cartBtn.addEventListener('click', openCart);
+  cartClose.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){ closeCart(); }
+  });
+
+  checkoutBtn.addEventListener('click', function(){
+    if (getCartCount() === 0){
+      showToast('Your bag is empty.');
+      return;
+    }
+    showToast('Redirecting to secure checkout…');
+  });
+
+  // ---- Add to Cart buttons on product cards ----
+  document.querySelectorAll('.product-card').forEach(function(card){
+    var btn = card.querySelector('.add-cart-btn');
+    var id = card.getAttribute('data-id');
+    var name = card.getAttribute('data-name');
+    var price = parseFloat(card.getAttribute('data-price'));
+    var img = card.getAttribute('data-img');
+
+    btn.addEventListener('click', function(){
+      addToCart(id, name, price, img);
+      btn.textContent = 'Added';
+      btn.classList.add('added');
+      setTimeout(function(){
+        btn.textContent = 'Add to Cart';
+        btn.classList.remove('added');
+      }, 1200);
+    });
+  });
+
+  // ---- Brand / category "View Products" buttons ----
+  document.querySelectorAll('.view-brand-btn').forEach(function(card){
+    var name = card.getAttribute('data-brand');
+    card.addEventListener('click', function(e){
+      showToast('Browsing ' + name + ' edit…');
+      document.getElementById('new-arrivals').scrollIntoView({ behavior:'smooth' });
+    });
+  });
+
+  // ---- View All button ----
+  document.querySelectorAll('.view-all-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('exclusives').scrollIntoView({ behavior:'smooth' });
+    });
+  });
+
+  // ---- Footer placeholder links ----
+  document.querySelectorAll('.footer-link').forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      showToast(link.textContent.trim() + ' — coming soon');
+    });
+  });
+
+  // ---- Newsletter form ----
+  newsletterForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = newsletterForm.querySelector('button');
+    var original = btn.textContent;
+    btn.textContent = 'Thank You';
+    showToast('You\'re on the list!');
+    setTimeout(function(){ btn.textContent = original; newsletterForm.reset(); }, 2200);
+  });
+
+  // ---- Scroll reveal ----
+  var revealEls = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
       }
     });
+  }, { threshold: 0.12 });
+  revealEls.forEach(function(el){ observer.observe(el); });
 
-    // ----------------------
-    // Global Cart State
-    // ----------------------
-    let cart = [];
-
-    function toggleCart() {
-      const overlay = document.getElementById('cart-overlay');
-      const drawer = document.getElementById('cart-drawer');
-      
-      if (drawer.classList.contains('translate-x-full')) {
-        // Open
-        overlay.classList.remove('opacity-0', 'pointer-events-none');
-        drawer.classList.remove('translate-x-full');
-      } else {
-        // Close
-        overlay.classList.add('opacity-0', 'pointer-events-none');
-        drawer.classList.add('translate-x-full');
-      }
-    }
-
-    function addToCart(id, name, price, image, btnElem) {
-      const existingItem = cart.find(i => i.id === id);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({ id, name, price, image, quantity: 1 });
-      }
-      
-      updateCartUI();
-      
-      // Haptic Feedback for Button
-      if (btnElem) {
-        const textSpan = btnElem.querySelector('.add-text');
-        const iconSpan = btnElem.querySelector('.icon');
-        
-        const originalText = textSpan.innerText;
-        const originalIcon = iconSpan.className;
-        
-        textSpan.innerText = 'Added!';
-        iconSpan.className = 'ph-thin ph-check text-lg text-accent group-hover/btn:text-bg icon';
-        
-        setTimeout(() => {
-          textSpan.innerText = originalText;
-          iconSpan.className = originalIcon;
-        }, 1200);
-      }
-      
-      // Auto-open cart on first add
-      if(cart.length === 1 && cart[0].quantity === 1) {
-          toggleCart();
-      }
-    }
-
-    function removeFromCart(id) {
-      cart = cart.filter(i => i.id !== id);
-      updateCartUI();
-    }
-    
-    function updateQuantity(id, delta) {
-        const item = cart.find(i => i.id === id);
-        if(!item) return;
-        
-        item.quantity += delta;
-        if(item.quantity <= 0) {
-            removeFromCart(id);
-        } else {
-            updateCartUI();
-        }
-    }
-
-    function updateCartUI() {
-      // Update count badge
-      const count = cart.reduce((sum, i) => sum + i.quantity, 0);
-      document.getElementById('cart-count').innerText = count;
-      
-      const container = document.getElementById('cart-items');
-      const totalElem = document.getElementById('cart-total');
-      
-      if (cart.length === 0) {
-        container.innerHTML = '<p class="text-muted text-sm text-center mt-10 font-mono uppercase tracking-widest">Your cart is empty.</p>';
-        totalElem.innerText = 'Rs. 0';
-        return;
-      }
-      
-      // Build Items HTML
-      container.innerHTML = cart.map(item => `
-        <div class="flex gap-4 p-4 border border-border bg-surface relative group">
-          <div class="w-20 h-24 bg-bg flex-shrink-0">
-            <img src="${item.image}" class="w-full h-full object-cover transition-all" />
-          </div>
-          <div class="flex-1 flex flex-col justify-between py-1">
-            <div>
-              <h4 class="text-text text-[14px] font-heading leading-tight">${item.name}</h4>
-              <div class="text-accent font-mono text-[11px] mt-2">Rs. ${item.price.toLocaleString()}</div>
-            </div>
-            <div class="flex items-center gap-3 mt-4">
-              <div class="flex items-center border border-border">
-                <button onclick="updateQuantity('${item.id}', -1)" class="w-6 h-6 flex items-center justify-center text-muted hover:text-text hover:bg-bg transition-colors"><i class="ph-thin ph-minus text-[10px]"></i></button>
-                <span class="w-6 text-center font-mono text-[11px] text-text">${item.quantity}</span>
-                <button onclick="updateQuantity('${item.id}', 1)" class="w-6 h-6 flex items-center justify-center text-muted hover:text-text hover:bg-bg transition-colors"><i class="ph-thin ph-plus text-[10px]"></i></button>
-              </div>
-            </div>
-          </div>
-          <button onclick="removeFromCart('${item.id}')" class="absolute top-4 right-4 text-muted hover:text-accent transition-colors">
-            <i class="ph-thin ph-trash text-lg"></i>
-          </button>
-        </div>
-      `).join('');
-      
-      // Update Total
-      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      totalElem.innerText = 'Rs. ' + total.toLocaleString();
-    }
-
-    // Checkout to WhatsApp
-    document.getElementById('checkout-btn').addEventListener('click', () => {
-      if (cart.length === 0) return;
-      
-      let msg = "Hello DeValue Store! I would like to order the following items from the website:\n\n";
-      cart.forEach(item => {
-        msg += `▪ ${item.quantity}x ${item.name} (Rs. ${(item.price * item.quantity).toLocaleString()})\n`;
-      });
-      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      msg += `\n*TOTAL: Rs. ${total.toLocaleString()}*`;
-      
-      const url = `https://wa.me/923000000000?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-    });
-
-    // Event Listeners for Cart Triggers
-    document.getElementById('cart-toggle-btn').addEventListener('click', toggleCart);
-    document.getElementById('cart-close-btn').addEventListener('click', toggleCart);
-    document.getElementById('cart-overlay').addEventListener('click', toggleCart);
-
-    // ----------------------
-    // Animation & Layout logic
-    // ----------------------
-    const observeElements = () => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('reveal-hidden');
-            entry.target.classList.add('reveal-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      document.querySelectorAll('.reveal').forEach(el => {
-        el.classList.add('reveal-hidden');
-        observer.observe(el);
-      });
+  // ---- Authentication Ritual seal toggle ----
+  var sealBtn = document.getElementById('sealBtn');
+  var ritualPoints = document.getElementById('ritualPoints');
+  if (sealBtn && ritualPoints){
+    var toggleSeal = function(){
+      var isActive = sealBtn.classList.toggle('active');
+      ritualPoints.classList.toggle('show', isActive);
+      sealBtn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
     };
-
-    const handleNavbar = () => {
-      const nav = document.getElementById('navbar');
-      const detector = document.getElementById('scroll-detector');
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) {
-            nav.classList.add('bg-surface/90', 'backdrop-blur-xl', 'border-border', 'shadow-2xl', 'px-6', 'max-w-5xl');
-            nav.classList.remove('border-transparent', 'px-2', 'max-w-6xl');
-          } else {
-            nav.classList.remove('bg-surface/90', 'backdrop-blur-xl', 'border-border', 'shadow-2xl', 'px-6', 'max-w-5xl');
-            nav.classList.add('border-transparent', 'px-2', 'max-w-6xl');
-          }
-        });
-      }, { threshold: 0 });
-
-      if (detector) observer.observe(detector);
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      observeElements();
-      handleNavbar();
+    sealBtn.addEventListener('click', toggleSeal);
+    sealBtn.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        toggleSeal();
+      }
     });
-  </script>
+  }
+
+  // ---- Close mobile nav/search on resize to desktop ----
+  window.addEventListener('resize', function(){
+    if (window.innerWidth >= 900){
+      mainNav.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.innerHTML = '&#9776;';
+    }
+  });
+
+  renderCart();
+})();
+</script>
+
 </body>
 </html>
